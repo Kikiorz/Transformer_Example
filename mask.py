@@ -4,9 +4,10 @@ from data import zidian_x, zidian_y
 
 
 def mask_pad(data):
-    # b句话,每句话50个词,这里是还没embed的
     # data = [b, 50]
-    # 判断每个词是不是<PAD>
+
+    # 1. 识别 Padding Token
+    # mask_bool: [b, 50], True 表示该位置是 Padding
     mask = data == zidian_x['<PAD>']
 
     # [b, 50] -> [b, 1, 1, 50]

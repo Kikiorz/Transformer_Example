@@ -1,5 +1,5 @@
 import math
-
+import einops
 import torch
 
 
@@ -9,12 +9,15 @@ def attention(Q, K, V, mask):
     # Q,K,V = [b, 4, 50, 8]
 
     # [b, 4, 50, 8] * [b, 4, 8, 50] -> [b, 4, 50, 50]
+
     # Q,K矩阵相乘,求每个词相对其他所有词的注意力
     score = torch.matmul(Q, K.permute(0, 1, 3, 2))
+    # 或者使用einops.einsum实现
 
+    
     # 除以每个头维数的平方根,做数值缩放
     score /= 8 ** 0.5
-
+  
     # mask遮盖,mask是true的地方都被替换成-inf,这样在计算softmax的时候,-inf会被压缩到0
     # mask = [b, 1, 50, 50]
     score = score.masked_fill_(mask, -float('inf'))
@@ -127,7 +130,6 @@ class PositionEmbedding(torch.nn.Module):
             if i % 2 == 0:
                 return math.sin(pe)
             return math.cos(pe)
-
         # 初始化位置编码矩阵
         pe = torch.empty(50, 32)
         for i in range(50):
@@ -141,7 +143,8 @@ class PositionEmbedding(torch.nn.Module):
         # 词编码层
         self.embed = torch.nn.Embedding(39, 32)
         # 初始化参数
-        self.embed.weight.data.normal_(0, 0.1)
+        torch.nn.init.xavier_normal_(self.embed.weight, gain=0.1)
+        # self.embed.weight.data.normal_(0, 0.1)
 
     def forward(self, x):
         # [8, 50] -> [8, 50, 32]

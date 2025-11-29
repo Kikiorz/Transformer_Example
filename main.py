@@ -1,5 +1,5 @@
 import torch
-
+import einops
 from data import zidian_y, loader, zidian_xr, zidian_yr
 from mask import mask_pad, mask_tril
 from model import Transformer
@@ -101,12 +101,12 @@ for epoch in range(1):
 
     sched.step()
 
-# 测试
-for i, (x, y) in enumerate(loader):
-    break
+# # 测试
+# for i, (x, y) in enumerate(loader):
+#     break
 
-for i in range(8):
-    print(i)
-    print(''.join([zidian_xr[i] for i in x[i].tolist()]))
-    print(''.join([zidian_yr[i] for i in y[i].tolist()]))
-    print(''.join([zidian_yr[i] for i in predict(x[i].unsqueeze(0))[0].tolist()]))
+# for i in range(8):
+#     print(i)
+#     print(''.join([zidian_xr[i] for i in x[i].tolist()]))
+#     print(''.join([zidian_yr[i] for i in y[i].tolist()]))
+#     print(''.join([zidian_yr[i] for i in predict(x[i].unsqueeze(0))[0].tolist()]))

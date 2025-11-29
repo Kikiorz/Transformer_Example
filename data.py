@@ -131,10 +131,10 @@ class Dataset(torch.utils.data.Dataset):
     def __getitem__(self, i):
         return get_data()
 
-
 # 数据加载器
 loader = torch.utils.data.DataLoader(dataset=Dataset(),
                                      batch_size=8,
                                      drop_last=True,
                                      shuffle=True,
                                      collate_fn=None)
+print('数据加载器定义完成')
